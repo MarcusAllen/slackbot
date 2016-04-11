@@ -122,7 +122,11 @@ class SlackClient(object):
                 attachments=attachments)
 
     def get_channel(self, channel_id):
-        return Channel(self, self.channels[channel_id])
+        try:
+          return Channel(self, self.channels[channel_id])
+        except Exception:
+           self.reconnect()
+           return Channel(self,self.channels[channel_id])
 
     def find_user_by_name(self, username):
         for userid, user in iteritems(self.users):
